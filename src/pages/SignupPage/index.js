@@ -28,7 +28,7 @@ const SignupPage = (props) => {
     }
   };
 
-  console.log(props.userId);
+ 
   return (
     <div className={css.SignupPage}>
       {props.userId && <Redirect to="/" />}

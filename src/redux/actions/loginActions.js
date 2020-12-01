@@ -17,7 +17,6 @@ export const loginUser = (email, password) => {
         const token = result.data.idToken;
         const userId = result.data.localId;
         const expiresIn = result.data.expiresIn;
-        console.log(expiresIn);
         const currentDate = new Date();
         const expireDate = currentDate.getTime() + expiresIn;
         const refreshToken = result.data.refreshToken;
@@ -26,7 +25,7 @@ export const loginUser = (email, password) => {
         localStorage.setItem("expireDate", expireDate);
         localStorage.setItem("refreshToken", refreshToken);
         dispatch(loginUserSuccess(token, userId));
-        // actions.autoLogoutAfterMillsec(expiresIn*1000);
+
         dispatch(actions.autoLogoutAfterMillsec(expiresIn * 1000));
       })
       .catch((error) => {

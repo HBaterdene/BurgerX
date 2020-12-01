@@ -16,9 +16,16 @@ export const signupUser = (email, password) => {
       .then((result) => {
         const token = result.data.idToken;
         const userId = result.data.localId;
+        const expiresIn = result.data.expiresIn;
+        const currentDate = new Date();
+        const expireDate = currentDate.getTime() + expiresIn;
+        const refreshToken = result.data.refreshToken;
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("expireDate", expireDate);
+        localStorage.setItem("refreshToken", refreshToken);
         dispatch(signupUserSuccess(token, userId));
+        dispatch(autoLogoutAfterMillsec(expiresIn * 1000));
       })
       .catch((error) => {
         dispatch(signupUserError(error));
