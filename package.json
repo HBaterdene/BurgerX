@@ -2,7 +2,7 @@
   "name": "online-burger-order",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hbaterdene.github.io/burgerX",
+  "homepage": "https://hbaterdene.github.io/BurgerX",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
@@ -23,7 +23,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
