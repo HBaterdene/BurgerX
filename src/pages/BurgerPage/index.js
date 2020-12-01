@@ -1,55 +1,46 @@
-import React, { Component } from "react";
-import Burger from "../../components/Burger"
-import BuildControls from "../../components/BuildControls"
-import Modal from "../../components/General/Modal"
+import React, { useState } from "react";
+import Burger from "../../components/Burger";
+import BuildControls from "../../components/BuildControls";
+import Modal from "../../components/General/Modal";
 import OrderSummary from "../../components/OrderSummary";
-import axios from '../../axios-orders';
-import Spinner from "../../components/General/Spinner"
+import axios from "../../axios-orders";
+import Spinner from "../../components/General/Spinner";
 
- class BurgerPage extends Component {
-   state = {
-       confirmOrder: false
-    };
+const BurgerPage = (props) => {
+  const [confirmOrder, setConfirmOrder] = useState(false);
+  const continueOrder = () => {
+    props.history.push({
+      pathname: "/ship",
+    });
 
-    continueOrder = () => {
-        this.props.history.push({
-          pathname: "/ship",
-        })
+    closeConfirmModal();
+  };
+  const showConfirmModal = () => {
+    setConfirmOrder(true);
+  };
+  const closeConfirmModal = () => {
+    setConfirmOrder(false);
+  };
 
-        this.closeConfirmModal();
-
-    }
-    showConfirmModal = () => {
-        this.setState({confirmOrder: true})
-    }
-    closeConfirmModal = () => {
-        this.setState({confirmOrder: false})
-    }
-    
-    
-    render(){
-       
-        return(
-            <div>
-                <Modal show = {this.state.confirmOrder} closeConfirmModal = {this.closeConfirmModal}>
-                {this.state.loading ? (<Spinner/>) : (<OrderSummary 
-                      onCancel = {this.closeConfirmModal}
-                      onContinue ={this.continueOrder}
-                      ingredients={this.props.burgeriinOrts}
-                      ingredientNames={this.props.ingredientNames}
-                      price={this.props.niitUne}
-                    />)}
-                    
-                </Modal>
-                <Burger />
-                <BuildControls
-                  disabledButton={!this.props.purchasing}
-                  showConfirmModal={this.showConfirmModal}
-                  closeConfirmModal={this.closeConfirmModal}
-                />
-            </div>
-        )
-    }
-}
+  return (
+    <div>
+      <Modal show={confirmOrder} closeConfirmModal={closeConfirmModal}>
+        <OrderSummary
+          onCancel={closeConfirmModal}
+          onContinue={continueOrder}
+          ingredients={props.burgeriinOrts}
+          ingredientNames={props.ingredientNames}
+          price={props.niitUne}
+        />
+      </Modal>
+      <Burger />
+      <BuildControls
+        disabledButton={!props.purchasing}
+        showConfirmModal={showConfirmModal}
+        closeConfirmModal={closeConfirmModal}
+      />
+    </div>
+  );
+};
 
 export default BurgerPage;

@@ -1,94 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Button from "../General/Button";
 import css from "./style.module.css";
 import { withRouter } from "react-router-dom";
-import axios from "../../axios-orders";
 import Spinner from "../General/Spinner";
 import * as actions from "../../redux/actions/OrderActions";
 
-class ContactData extends React.Component {
-  state = {
-    hayag: {
-      name: null,
-      city: null,
-      street: null,
-    },
-    loading: false,
-  };
+const ContactData = (props) => {
+  const [name, setName] = useState();
+  const [city, setCity] = useState();
+  const [street, setStreet] = useState();
 
-  changeName = (e) => {
-    this.setState({ name: e.target.value });
-  };
-  changeStreet = (e) => {
-    this.setState({ street: e.target.value });
-  };
-  changeCity = (e) => {
-    this.setState({ city: e.target.value });
-  };
-
-  componentDidUpdate() {
-    if (
-      this.props.newOrderStatus.finished &&
-      !this.props.newOrderStatus.error
-    ) {
-      this.props.history.replace("/orders");
+  useEffect(() => {
+    if (props.newOrderStatus.finished && !props.newOrderStatus.error) {
+      props.history.replace("/orders");
     }
-  }
-  saveOrder = () => {
+
+    return () => {
+      //цэвэрлэгч функц: Захиалгыг буцаагаад хоосолно. Дараачийн захиалгад бэлтгэнэ.
+      {
+        props.newOrderStatus.finished && props.clearOrder();
+      }
+    };
+  }, [props.newOrderStatus.finished]);
+  const changeName = (e) => {
+    setName(e.target.value);
+  };
+  const changeStreet = (e) => {
+    setStreet(e.target.value);
+  };
+  const changeCity = (e) => {
+    setCity(e.target.value);
+  };
+
+  const saveOrder = () => {
     const newOrder = {
-      userId: this.props.userId,
-      orts: this.props.ingredients,
-      dun: this.props.price,
+      userId: props.userId,
+      orts: props.ingredients,
+      dun: props.price,
       hayag: {
-        name: this.state.name,
-        city: this.state.city,
-        street: this.state.street,
+        name,
+        city,
+        street,
       },
     };
-    this.props.saveOrderAction(newOrder);
+    props.saveOrderAction(newOrder);
   };
-  render() {
-    return (
-      <div className={css.ContactData}>
-        <div>
-          {this.props.newOrderStatus.error &&
-            `Захиалгыг хадгалах явцад алдаа гарлаа : ${this.props.newOrderStatus.error}`}
-        </div>
-        {this.props.newOrderStatus.saving ? (
-          <Spinner />
-        ) : (
-          <div>
-            {" "}
-            <input
-              onChange={this.changeName}
-              type="text"
-              name="name"
-              placeholder="Таны нэр"
-            />
-            <input
-              onChange={this.changeStreet}
-              type="text"
-              name="street"
-              placeholder="Таны гэрийн хаяг"
-            />
-            <input
-              onChange={this.changeCity}
-              type="text"
-              name="city"
-              placeholder="Таны оршин суугаа хот"
-            />
-            <Button
-              text="ИЛГЭЭХ"
-              ButtonType="Success"
-              daragdsan={this.saveOrder}
-            />
-          </div>
-        )}
+
+  return (
+    <div className={css.ContactData}>
+      <div>
+        {props.newOrderStatus.error &&
+          `Захиалгыг хадгалах явцад алдаа гарлаа : ${props.newOrderStatus.error}`}
       </div>
-    );
-  }
-}
+      {props.newOrderStatus.saving ? (
+        <Spinner />
+      ) : (
+        <div>
+          <input
+            onChange={changeName}
+            type="text"
+            name="name"
+            placeholder="Таны нэр"
+          />
+          <input
+            onChange={changeStreet}
+            type="text"
+            name="street"
+            placeholder="Таны гэрийн хаяг"
+          />
+          <input
+            onChange={changeCity}
+            type="text"
+            name="city"
+            placeholder="Таны оршин суугаа хот"
+          />
+          <Button text="ИЛГЭЭХ" ButtonType="Success" daragdsan={saveOrder} />
+        </div>
+      )}
+    </div>
+  );
+};
 const mapStateToProps = (state) => {
   return {
     price: state.burgerReducer.totalPrice,
@@ -100,6 +92,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     saveOrderAction: (newOrder) => dispatch(actions.saveOrder(newOrder)),
+    clearOrder: () => dispatch(actions.clearOrder()),
   };
 };
 

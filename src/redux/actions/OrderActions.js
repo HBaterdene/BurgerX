@@ -16,6 +16,11 @@ export const loadOrders = () => {
       .catch((err) => dispatch(loadOrdersError(err)));
   };
 };
+export const clearOrder = () => {
+  return {
+    type: "CLEAR_ORDER",
+  };
+};
 export const loadOrdersStart = () => {
   return {
     type: "LOAD_ORDERS_START",
