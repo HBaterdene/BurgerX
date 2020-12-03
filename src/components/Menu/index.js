@@ -1,29 +1,28 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
 import css from "./style.module.css";
 import MenuItem from "../MenuItem";
-const Menu = (props) => (
-  <ul className={css.Menu}>
-    {props.userId ? (
-      <Fragment>
-        <MenuItem link="/logout"> ГАРАХ </MenuItem>
-        <MenuItem exact link="/">
-          ШИНЭ ЗАХИАЛГА
-        </MenuItem>
-        <MenuItem link="/orders">ЗАХИАЛГАНУУД</MenuItem>
-      </Fragment>
-    ) : (
-      <Fragment>
-        <MenuItem link="/login">НЭВТРЭХ</MenuItem>
-        <MenuItem link="/signup">{"Бүртгүүлэх".toUpperCase()}</MenuItem>
-      </Fragment>
-    )}
-  </ul>
-);
+import UserContext from "../../context/UserContext";
+const Menu = () => {
+  const ctx = useContext(UserContext);
 
-const mapStateToProps = (state) => {
-  return {
-    userId: state.signupLoginReducer.userId,
-  };
+  return (
+    <ul className={css.Menu}>
+      {ctx.state.userId ? (
+        <>
+          <MenuItem link="/logout"> ГАРАХ </MenuItem>
+          <MenuItem exact link="/">
+            ШИНЭ ЗАХИАЛГА
+          </MenuItem>
+          <MenuItem link="/orders">ЗАХИАЛГАНУУД</MenuItem>
+        </>
+      ) : (
+        <>
+          <MenuItem link="/login">НЭВТРЭХ</MenuItem>
+          <MenuItem link="/signup">{"Бүртгүүлэх".toUpperCase()}</MenuItem>
+        </>
+      )}
+    </ul>
+  );
 };
-export default connect(mapStateToProps)(Menu);
+
+export default Menu;

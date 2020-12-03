@@ -40,20 +40,7 @@ export const loadOrdersError = (error) => {
 };
 
 //захиалгыг хадгалах
-export const saveOrder = (newOrder) => {
-  return function (dispatch, getState) {
-    dispatch(saveOrderStart());
-    const token = getState().signupLoginReducer.token;
-    axios
-      .post(`/orders.json?auth=${token}`, newOrder)
-      .then((response) => {
-        dispatch(saveOrderSuccess());
-      })
-      .catch((error) => {
-        dispatch(saveOrderError(error));
-      });
-  };
-};
+
 export const saveOrderStart = (newOrder) => {
   return {
     type: "SAVE_ORDER_START",

@@ -25,20 +25,10 @@ const BurgerPage = (props) => {
   return (
     <div>
       <Modal show={confirmOrder} closeConfirmModal={closeConfirmModal}>
-        <OrderSummary
-          onCancel={closeConfirmModal}
-          onContinue={continueOrder}
-          ingredients={props.burgeriinOrts}
-          ingredientNames={props.ingredientNames}
-          price={props.niitUne}
-        />
+        <OrderSummary onCancel={closeConfirmModal} onContinue={continueOrder} />
       </Modal>
       <Burger />
-      <BuildControls
-        disabledButton={!props.purchasing}
-        showConfirmModal={showConfirmModal}
-        closeConfirmModal={closeConfirmModal}
-      />
+      <BuildControls showConfirmModal={showConfirmModal} />
     </div>
   );
 };

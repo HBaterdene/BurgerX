@@ -14,11 +14,15 @@ const reducer = (state = initialState, action) => {
         saving: true,
       };
     case "SIGNUP_USER_ERROR":
-      return {
-        ...state,
-        saving: false,
-        firebaseError: action.error.response.data.error.message,
-      };
+      if (action.error.response !== undefined) {
+        return {
+          ...state,
+          saving: false,
+          firebaseError: action.error.response.data.error.message,
+        };
+      } else {
+        alert("Can't connect to internet");
+      }
     case "SIGNUP_USER_SUCCESS":
       return {
         ...state,
